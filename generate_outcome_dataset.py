@@ -32,6 +32,7 @@ def construct_feedback_dataset() -> rg.FeedbackDataset:
                 field="case-summary",
                 required=True,
                 visible_labels=6,
+                allow_overlapping=True
             )
         ],
     )
