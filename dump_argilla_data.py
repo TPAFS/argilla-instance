@@ -1,10 +1,10 @@
 import argilla as rg
 
-# load your annotated dataset from the Argilla web app
-ds_name = "adjudication-spans"
-dataset_rg = rg.load(ds_name)
-local_dataset = dataset_rg.pull(max_records=100)
+# Load annotated dataset from the argilla server
+ds_name = "case-outcomes"
+workspace = "case-outcomes"
+local_dataset = rg.FeedbackDataset.from_argilla(name=ds_name, workspace=workspace)
 
-# export your Argilla Dataset to a datasets Dataset
-dataset_ds = dataset_rg.format_as("datasets")
-dataset_ds.to_json(f"{ds_name}.jsonl")
+# Export argilla dataset to a datasets Dataset
+dataset_ds = local_dataset.format_as("datasets")
+dataset_ds.to_json(f"./data/annotated/{ds_name}.jsonl")
