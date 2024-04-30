@@ -7,7 +7,6 @@ import json
 ARGILLA_API_URL = "http://localhost:6900"
 ARGILLA_API_KEY = "argilla.apikey"
 
-
 def construct_feedback_dataset() -> rg.FeedbackDataset:
     # Span Based extractive QA dataset
     ds = rg.FeedbackDataset(
@@ -87,8 +86,6 @@ if __name__ == "__main__":
             justification_end = justification_start + len(justification)
             if justification_start >= justification_end:
                 continue
-
-            # TODO: handle overlapping spans, not allowed by argilla in the same question?
 
             record = rg.FeedbackRecord(
                 fields={
