@@ -7,7 +7,27 @@ import json
 ARGILLA_API_URL = "http://localhost:6900"
 ARGILLA_API_KEY = "argilla.apikey"
 
+
+
 def construct_feedback_dataset() -> rg.FeedbackDataset:
+
+    guidelines = """Select the spans for all specified subsections of the text, if they exist. TODO: specify punctuation rules, etc.\n
+
+    Include terminal punctuation for full sentence spans.\n
+
+    Use the following guidelines to select spans:\n:
+
+
+    **Background Context**
+    This is the maximal case detail which is known at the time of the appeal review. This includes, but is not necessarily limited
+    to, all details provided that describe the situation leading up to the adverse coverage denial, and all actions taken by the insurer
+    before an appeal was submitted to an independent reviewer.
+
+
+    **Note**: Spans (or subsections thereof) can be given multiple labels. For example, a diagnosis is likely to occur
+    within background context.
+    """
+
     # Span Based extractive QA dataset
     ds = rg.FeedbackDataset(
         guidelines="Select the spans for all specified subsections of the text, if they exist.",
@@ -40,7 +60,7 @@ def construct_feedback_dataset() -> rg.FeedbackDataset:
 
 if __name__ == "__main__":
     # Construct a dataset
-    target_workspace = "case-outcomes"
+    target_workspace = "case-outcomes2"
 
     # Create workspace if it doesn't exist
     try:
@@ -74,7 +94,7 @@ if __name__ == "__main__":
             appeal_type = json_obj["appeal_type"]
             outcome = json_obj["decision"]
             background = json_obj["background"]
-            justification = json_obj["justification"]
+            # justification = json_obj["justification"]
 
             # Calculate start / end indices
             background_start = full_text.index(background)
@@ -82,10 +102,10 @@ if __name__ == "__main__":
             if background_start >= background_end:
                 continue
 
-            justification_start = full_text.index(justification)
-            justification_end = justification_start + len(justification)
-            if justification_start >= justification_end:
-                continue
+            # justification_start = full_text.index(justification)
+            # justification_end = justification_start + len(justification)
+            # if justification_start >= justification_end:
+            #     continue
 
             record = rg.FeedbackRecord(
                 fields={
@@ -103,12 +123,12 @@ if __name__ == "__main__":
                                 label="BC",
                                 score=0.9,
                             ),
-                            SpanValueSchema(
-                                start=justification_start,  # position of the first character of the span
-                                end=justification_end,  # position of the character right after the end of the span
-                                label="RTL",
-                                score=0.9,
-                            ),
+                            # SpanValueSchema(
+                            #     start=justification_start,  # position of the first character of the span
+                            #     end=justification_end,  # position of the character right after the end of the span
+                            #     label="RTL",
+                            #     score=0.9,
+                            # ),
                         ],
                         agent="nydfs-manual-rules-v0.0.0",
                     ),
