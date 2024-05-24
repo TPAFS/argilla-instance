@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   argilla:
@@ -19,8 +17,9 @@ services:
       # volumes:
       #- ${PWD}/.users.yaml:/config/.users.yaml
       
-      # DEFAULT_USER_ENABLED: "true"
+      DEFAULT_USER_ENABLED: true
       # DEFAULT_USERNAME: "custom-user"
+      # ARGILLA_LOCAL_AUTH_DEFAULT_PASSWORD: $2y$05$XQmEiiEdZQMvSyucvlE/oOxhBrwvB8lgvrPBX5mxfbn0YB.dNz/Y2 # htpasswd hash of secret password
       # DEFAULT_USER_PASSWORD: "custom-password" # Uncomment this line to set a custom password for the default user
       # DEFAULT_USER_API_KEY: "custom-api-key" # Uncomment this line to set a custom api-key for the default user
     networks:
