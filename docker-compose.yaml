@@ -1,7 +1,7 @@
 services:
 
   argilla:
-    image: argilla/argilla-server@sha256:c5058b18362d81e8755e4d304b6829234e70919692645575e21bb560316b92cf
+    image: argilla/argilla-server@sha256:6d80baa6359109797c72afb316c1417234ab781a1288797043440bc9d69f75fd
     restart: unless-stopped
     ports:
       - "6900:6900"
