@@ -1,7 +1,7 @@
 services:
 
   argilla:
-    image: argilla/argilla-server@sha256:6d80baa6359109797c72afb316c1417234ab781a1288797043440bc9d69f75fd
+    image: argilla/argilla-server@sha256:b1db6256bbc614946ec648ee19b637ea65a1152924e33d2519dc441db3f5d2c6
     restart: unless-stopped
     ports:
       - "6900:6900"
@@ -18,10 +18,8 @@ services:
       #- ${PWD}/.users.yaml:/config/.users.yaml
       
       DEFAULT_USER_ENABLED: true
-      # DEFAULT_USERNAME: "custom-user"
-      # ARGILLA_LOCAL_AUTH_DEFAULT_PASSWORD: $2y$05$XQmEiiEdZQMvSyucvlE/oOxhBrwvB8lgvrPBX5mxfbn0YB.dNz/Y2 # htpasswd hash of secret password
-      # DEFAULT_USER_PASSWORD: "custom-password" # Uncomment this line to set a custom password for the default user
-      # DEFAULT_USER_API_KEY: "custom-api-key" # Uncomment this line to set a custom api-key for the default user
+      DEFAULT_USER_PASSWORD: ${DEFAULT_USER_PASSWORD:? Please set a new password for the default user.}
+      DEFAULT_USER_API_KEY: ${DEFAULT_USER_API_KEY:? Please set a new api key for the default user.}
     networks:
       - argilla
     volumes:
