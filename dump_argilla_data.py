@@ -3,8 +3,13 @@ import os
 
 import argilla as rg
 
+ARGILLA_API_URL = os.environ.get("ARGILLA_API_URL", "http://localhost:6900")
+ARGILLA_API_KEY = os.environ.get("DEFAULT_USER_API_KEY", "argilla.apikey")
+
 
 def main(dataset: str, workspace: str, outpath: str | None) -> None:
+    rg.init(api_url=ARGILLA_API_URL, api_key=ARGILLA_API_KEY)
+
     # Load an annotated dataset from the argilla server
     local_dataset = rg.FeedbackDataset.from_argilla(name=dataset, workspace=workspace)
 
