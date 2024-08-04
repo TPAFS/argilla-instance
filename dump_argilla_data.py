@@ -20,7 +20,7 @@ def main(dataset: str, workspace: str, outpath: str | None) -> None:
     if outpath is None:
         outpath = f"./data/annotated/{dataset}.jsonl"
 
-    os.makedirs(outpath, exist_ok=True)
+    os.makedirs(os.path.dirname(outpath), exist_ok=True)
     dataset_ds.to_json(outpath)
 
     return None
