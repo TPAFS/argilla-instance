@@ -74,10 +74,20 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
     """From a standardized jsonl format (namely that of HICRIC processed files),
     construct a list of records to submit into an argilla dataset of the format above.
     """
+
+    # # Used to add previously annotated records
+    # annotations = {}
+    # with open("./data/annotated/case-summaries-squad-agg.jsonl", "r") as jsonl_file:
+    #     for idx, line in enumerate(jsonl_file):
+    #         json_obj = json.loads(line)
+    #         context = json_obj["context"].strip()
+    #         answers = json_obj.get("answers")
+    #         annotations[context] = answers
+
     # Add records
     records = []
     with open(jsonl_path, "r") as jsonl_file:
-        for idx, line in enumerate(jsonl_file):
+        for _idx, line in enumerate(jsonl_file):
             json_obj = json.loads(line)
             full_text = json_obj["text"]
             outcome = json_obj.get("decision", "unknown")
@@ -103,6 +113,32 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
                     "final-outcome": outcome,
                 },
             )
+
+            # # Used to add previously annotated records
+            # if full_text.strip() in annotations:
+            #     answers = annotations[full_text.strip()]
+            #     texts = answers["text"]
+            #     starts = answers["answer_start"]
+            #     ends = [start + len(text) for (start, text) in zip(starts, texts)]
+
+            #     span_values = [
+            #         SpanValueSchema(
+            #             start=start,  # position of the first character of the span
+            #             end=end,  # position of the character right after the end of the span
+            #             label="BC",
+            #         )
+            #         for (start, end) in zip(starts, ends)
+            #     ]
+            #     values = {"case-spans": {"value": span_values}}
+
+            #     record.responses = [
+            #         {
+            #             "user_id": "b0fe3416-1c4c-430c-8f61-2efbf338a59a",
+            #             "values": values,
+            #             "status": "submitted",
+            #         }
+            #     ]
+
             if include_suggestions:
                 suggestions = (
                     [
