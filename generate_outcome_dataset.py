@@ -70,7 +70,7 @@ def make_workspace(ws_name: str) -> None:
     return None
 
 
-def construct_ds_records(jsonl_path: str) -> list:
+def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
     """From a standardized jsonl format (namely that of HICRIC processed files),
     construct a list of records to submit into an argilla dataset of the format above.
     """
@@ -151,6 +151,6 @@ if __name__ == "__main__":
 
     for ds_name, path in sources:
         ds = construct_feedback_dataset()
-        records = construct_ds_records(path)
+        records = construct_ds_records(path, include_suggestions)
         ds.add_records(records)
         ds.push_to_argilla(name=ds_name, workspace=target_workspace)
