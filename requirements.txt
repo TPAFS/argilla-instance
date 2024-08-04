@@ -1,2 +1,2 @@
-argilla
+argilla==1.28.0
 datasets
