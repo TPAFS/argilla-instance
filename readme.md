@@ -32,7 +32,5 @@ python extract_and_merge_annotated.py --annotated_jsonl_paths './path/to/your/fi
 ```
 
 
-<!-- Examples to split (multiple physicians):
-
-92f69b41-d229-4c45-b9f7-3c08b7e9c5b7
+<!-- TODO: Re-define dataset (with existing annotations), by splitting "Physician1 :", "Physician2" subsets from CA DMHC data.
  -->
