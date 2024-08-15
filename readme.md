@@ -33,4 +33,10 @@ python extract_and_merge_annotated.py --annotated_jsonl_paths './path/to/your/fi
 
 
 <!-- TODO: Re-define dataset (with existing annotations), by splitting "Physician1 :", "Physician2" subsets from CA DMHC data.
+
+
+TODO: Add question for physician users:
+
+What is the correct outcome, assuming the facts presented in the background are accurate?
+Uphold, Overturn, Too little info.
  -->
