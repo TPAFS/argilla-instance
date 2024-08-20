@@ -1,2 +1,4 @@
 argilla==1.28.0
 datasets
+bcrypt==4.0.1
+passlib[bcrypt]
