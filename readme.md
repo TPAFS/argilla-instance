@@ -17,7 +17,7 @@ Explicitly, this means do this:
 from passlib.context import CryptContext
 _CRYPT_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 pw = "my-password"
-hashed = _CRYPT_CONTEXT.hash(password)
+hashed = _CRYPT_CONTEXT.hash(pw)
 ```
 
 
@@ -31,7 +31,7 @@ docker compose up
 On startup need to run:
 
 ```zsh
-argilla server database users migrate
+python -m argilla_server database users migrate
 ```
 
 in the server shell.
