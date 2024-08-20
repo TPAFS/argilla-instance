@@ -3,11 +3,38 @@
 
 ### Quick Start
 
+
+#### Create Custom Users Config
+
+Create a users file in the format shown in `users_template.yaml`.
+
+For the pinned version of the server we use, the hashed passwords must be constructed using bcrypt,
+as dictated in [this file](https://github.com/argilla-io/argilla-server/blob/6130c634506bc649a64d8461992946537ae287e1/src/argilla_server/contexts/accounts.py#L202).
+
+Explicitly, this means do this:
+
+```python
+from passlib.context import CryptContext
+_CRYPT_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pw = "my-password"
+hashed = _CRYPT_CONTEXT.hash(password)
+```
+
+
+
 #### Spin Up/Down
 
 ```zsh
 docker compose up
 ```
+
+On startup need to run:
+
+```zsh
+argilla server database users migrate
+```
+
+in the server shell.
 
 Spin down:
 
@@ -40,3 +67,4 @@ TODO: Add question for physician users:
 What is the correct outcome, assuming the facts presented in the background are accurate?
 Uphold, Overturn, Too little info.
  -->
+
