@@ -1,0 +1,9 @@
+- username: user
+  full_name: User Name
+  email: test@email
+  api_key: my-api-key
+  password: my-pass
+  hashed_password: $2b$12$GEfTSJNSkKOJebituI5NhOq/z1SGbldZzD.4jKPA9vyGF3Hb42c1m
+  # How one must produce a password hash, to expect this to work: https://github.com/argilla-io/argilla-server/blob/6130c634506bc649a64d8461992946537ae287e1/src/argilla_server/contexts/accounts.py#L202
+  workspaces: [case-summaries]
+  # No workspaces listed here would yield an owner. Dangerous! https://github.com/argilla-io/argilla-server/blob/6130c634506bc649a64d8461992946537ae287e1/src/argilla_server/cli/database/users/migrate.py#L96

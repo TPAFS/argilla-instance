@@ -12,12 +12,12 @@ services:
 
       ARGILLA_ENABLE_TELEMETRY: 0 # Opt-out for telemetry https://docs.argilla.io/en/latest/reference/telemetry.html
 
-      # Set user configuration https://docs.argilla.io/en/latest/getting_started/installation/configurations/user_management.html
-      # ARGILLA_LOCAL_AUTH_USERS_DB_FILE: /config/.users.yaml
-      # volumes:
-      #- ${PWD}/.users.yaml:/config/.users.yaml
+      # Set user configuration (no public docs for pinned version): https://github.com/argilla-io/argilla-server/blob/6130c634506bc649a64d8461992946537ae287e1/src/argilla_server/cli/database/users/migrate.py#L90
+      ARGILLA_LOCAL_AUTH_USERS_DB_FILE: /config/.users.yaml
+      USERS_DB: /config/.users.yaml
       
-      DEFAULT_USER_ENABLED: true
+      
+      DEFAULT_USER_ENABLED: false
       DEFAULT_USER_PASSWORD: ${DEFAULT_USER_PASSWORD:? Please set a new password for the default user.}
       DEFAULT_USER_API_KEY: ${DEFAULT_USER_API_KEY:? Please set a new api key for the default user.}
     networks:
@@ -26,6 +26,7 @@ services:
       # ARGILLA_HOME_PATH is used to define where Argilla will save it's application data.
       # If you change ARGILLA_HOME_PATH value please copy that same value to argilladata volume too.
       - argilladata:/var/lib/argilla
+      - ${PWD}/.users.yaml:/config/.users.yaml
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.5.3
     environment:
