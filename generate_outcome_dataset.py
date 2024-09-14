@@ -6,7 +6,7 @@ import json
 import os
 
 ARGILLA_API_URL = os.environ.get("ARGILLA_API_URL", "http://localhost:6900")
-ARGILLA_API_KEY = os.environ.get("DEFAULT_USER_API_KEY", "argilla.apikey")
+ARGILLA_API_KEY = os.environ.get("ARGILLA_API_KEY", "argilla.apikey")
 
 
 def construct_feedback_dataset() -> rg.FeedbackDataset:
