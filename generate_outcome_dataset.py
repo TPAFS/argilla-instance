@@ -50,7 +50,7 @@ def construct_feedback_dataset() -> rg.FeedbackDataset:
             ),
             rg.RatingQuestion(
                 name="info-sufficiency",
-                title="Is the Background Context you've highlighted sufficient to determine the case outcome?",
+                title="Is the Background Context you've highlighted sufficient to make an informed prediction for the case outcome?",
                 description="Use a scale from 1 to 5, 1 being the information is certainly insufficient, 5 being certainly sufficient.",
                 values=[1, 2, 3, 4, 5],
                 required=False,
@@ -75,14 +75,19 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
     construct a list of records to submit into an argilla dataset of the format above.
     """
 
-    # # Used to add previously annotated records
-    # annotations = {}
-    # with open("./data/annotated/case-summaries-squad-agg.jsonl", "r") as jsonl_file:
-    #     for idx, line in enumerate(jsonl_file):
-    #         json_obj = json.loads(line)
-    #         context = json_obj["context"].strip()
-    #         answers = json_obj.get("answers")
-    #         annotations[context] = answers
+    add_existing_annotations = True
+    add_to_userid = str(rg.User.me().id)  # Add existing annotations to user running script
+
+    # Used to add previously annotated records
+    if add_existing_annotations:
+        annotations = {}
+        with open("./data/annotated/case-summaries-w-sufficiency.jsonl", "r") as jsonl_file:
+            for idx, line in enumerate(jsonl_file):
+                json_obj = json.loads(line)
+                context = json_obj["context"].strip()
+                answers = json_obj.get("answers")
+                sufficiency_score = json_obj.get("sufficiency_score")
+                annotations[context] = {"answers": answers, "sufficiency_score": sufficiency_score}
 
     # Add records
     records = []
@@ -114,30 +119,33 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
                 },
             )
 
-            # # Used to add previously annotated records
-            # if full_text.strip() in annotations:
-            #     answers = annotations[full_text.strip()]
-            #     texts = answers["text"]
-            #     starts = answers["answer_start"]
-            #     ends = [start + len(text) for (start, text) in zip(starts, texts)]
+            # Used to add previously annotated records
+            if add_existing_annotations:
+                if full_text.strip() in annotations:
+                    existing_annotations = annotations[full_text.strip()]
+                    answers = existing_annotations["answers"]
+                    sufficiency_score = existing_annotations["sufficiency_score"]
+                    texts = answers["text"]
+                    starts = answers["answer_start"]
+                    ends = [start + len(text) for (start, text) in zip(starts, texts)]
 
-            #     span_values = [
-            #         SpanValueSchema(
-            #             start=start,  # position of the first character of the span
-            #             end=end,  # position of the character right after the end of the span
-            #             label="BC",
-            #         )
-            #         for (start, end) in zip(starts, ends)
-            #     ]
-            #     values = {"case-spans": {"value": span_values}}
+                    span_values = [
+                        SpanValueSchema(
+                            start=start,  # position of the first character of the span
+                            end=end,  # position of the character right after the end of the span
+                            label="BC",
+                        )
+                        for (start, end) in zip(starts, ends)
+                    ]
+                    values = {"case-spans": {"value": span_values}, "info-sufficiency": {"value": sufficiency_score}}
 
-            #     record.responses = [
-            #         {
-            #             "user_id": "b0fe3416-1c4c-430c-8f61-2efbf338a59a",
-            #             "values": values,
-            #             "status": "submitted",
-            #         }
-            #     ]
+                    record.responses = [
+                        {
+                            "user_id": add_to_userid,
+                            "values": values,
+                            "status": "submitted",
+                        }
+                    ]
 
             if include_suggestions:
                 suggestions = (
