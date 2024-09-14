@@ -7,10 +7,24 @@ def construct_squad_format_ex(rec: dict, question_name: str) -> dict | None:
     context = rec["case-summary"]
     question = "What is the background context in this case summary?"  # Q doesn't matter except for initial bootstrap
     id = uuid.uuid4().hex
+    sufficiency_score = get_sufficiency_score(rec)
     answers = get_background_answers(rec, question_name)
     if len(answers) == 0:
         answers.append({"answer_start": -1, "text": ""})
-    return {"answers": answers, "context": context, "id": id, "question": question, "title": id}
+    return {
+        "answers": answers,
+        "context": context,
+        "id": id,
+        "question": question,
+        "title": id,
+        "sufficiency_score": sufficiency_score,
+    }
+
+
+def get_sufficiency_score(rec: dict) -> int:
+    """For a given record, extract it's background span's sufficiency score"""
+    sufficiency_score = rec["info-sufficiency"][0]["value"]
+    return sufficiency_score
 
 
 def get_background_answers(rec: dict, question_name: str) -> list[dict]:
@@ -51,14 +65,15 @@ def main(annotated_jsonl_paths: list[str], outpath: str) -> None:
             all_recs.extend(recs)
 
     # Isolate only those records for which a background context annotation was made
+    # and a sufficiency score exists
     question_name = "case-spans"
     annotated_recs = [
         rec
         for rec in all_recs
-        if len(rec[question_name]) > 0 and rec[question_name][0].get("status", "unkown") != "discarded"
+        if len(rec[question_name]) > 0
+        and rec[question_name][0].get("status", "unkown") != "discarded"
+        and len(rec["info-sufficiency"]) > 0
     ]
-
-    # TODO: add option to filter by sufficiency scores here
 
     # Construct list of squad dicts
     squad_dicts = []
