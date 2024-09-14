@@ -10,22 +10,51 @@ ARGILLA_API_KEY = os.environ.get("ARGILLA_API_KEY", "argilla.apikey")
 
 
 def construct_feedback_dataset() -> rg.FeedbackDataset:
-    guidelines = """Select the spans associated with the background text for the case.
+    guidelines = """
 
-    Include terminal punctuation for full sentence spans.\n
+    ## **Span Selection**
 
-    Use the following guidelines to select spans:\n:
+    ### General Guidance
+    Select spans associated with each of four token-type classes.
+
+    The four token-types, and guideline descriptions for each are:
+
+    - **Background Context**
+
+    This is (ideally the maximal) case detail which is known at the time of the appeal review. This includes, but is not necessarily limited to, all details provided that describe the situation leading up to the adverse coverage denial, and all actions taken by the insurer _before_ an appeal was submitted to an independent reviewer. This should not include information which leaks the adjudication outcome, which constitutes the opinion of the reviewer, or which could not be known prior to appeal submission.
+
+    - **Diagnosis**
+
+    This should be some indication of the diagnosis associated with an appeal. It could be a diagnosis code, a plain text but precise description, or a broad category of diagnoses (e.g. "cancer"). Some reviews do not detail the relevant diagnosis.
+
+    - **Service**
+
+    This should be some indication of the service associated with an appeal. It could be a procedure code, a plain text but precise description, or a broad category of services (e.g. "oral surgery"). Some reviews do not detail the relevant services.
+
+    - **Reviewer's Decision**
+
+    This should be some indication of the decision of the reviewer writing the summary. This could be a single sentence in the review such as "The insurer's denial should be Overturned", or a  more implicit decision, such as "The insurer did not act in the best interest of the patient". Note that reviewer's decisions need not agree with the final outcome, as sometimes multiple reviewers vote on the outcome in a majority rule fashion.
 
 
-    **Background Context**
-    This is (ideally the maximal) case detail which is known at the time of the appeal review. This includes, but is not necessarily limited
-    to, all details provided that describe the situation leading up to the adverse coverage denial, and all actions taken by the insurer
-    before an appeal was submitted to an independent reviewer.
+    _Note_: Spans (or subspans) can be given multiple labels, or zero labels. The labels are not mutually exclusive, nor are they exhaustive. For example, a diagnosis is likely to occur _within_ background context.
 
+    #### Additional Details
 
-    **Note**: Spans (or subsections thereof) can be given multiple labels. For example, a diagnosis is likely to occur
-    within background context.
-    """
+    -  Include terminal punctuation for full sentence spans.
+    - The background context span labeling task is particularly subtle, as there are often summary descriptions of background context made by a reviewer imbued with potentially leaking, opinion based, or subjective language. When in doubt about whether a background span leaks the adjudication rationale or decision of a reviewer, do **not** highlight the background context.
+
+    ## **Background Sufficiency**
+
+    ### General Guidance
+
+    Rate the selected background context span on a scale from 1 to 5, to indicate the degree to which the background context alone is sufficient to make an informed guess about the likelihood of denial overturn.
+
+    #### Additional Details
+    This is a highly subjective matter. In general, none of the case descriptions included in these datasets are completely sufficient to make case adjudication determinations of accurately predict perfectly what the decisions are likely to be. This is because they uniformly lack context such as diagnosis and procedural codes, office and chart notes, patient medical history, etc, etc.
+
+    The goal here is primarily to retain _relative_ sufficiency estimates, on a per-annotator basis.
+
+    As normalizing guideposts, let's discuss the extreme cases. It is clear, for example, that some case description backgrounds are completely insufficient to make an informed guess about overturn likelihood. For example, some case backgrounds say only completely general things like "A patient was denied inpatient admission". There are a multitude of reasons why one could be denied inpatient admission that would result in overturn and a multitude of reasons that would not. Cases with only such completely unspecific backgrounds should receive a score of 1. On the other hand, the most detailed case backgrounds will include detailed diagnosis and service descriptions, as well as lengthy, detailed explanation about what led to the care event, what the patient's medical records suggest about the medical details of the event, why the insurer has issued a denial, and wh"""
 
     ds = rg.FeedbackDataset(
         guidelines=guidelines,
