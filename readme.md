@@ -4,6 +4,9 @@
 ### Quick Start
 
 
+#### Set the .env file
+
+
 #### Create Custom Users Config
 
 Create a users file in the format shown in `users_template.yaml`.
