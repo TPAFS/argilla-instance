@@ -18,8 +18,8 @@ services:
       
       
       DEFAULT_USER_ENABLED: false
-      DEFAULT_USER_PASSWORD: ${DEFAULT_USER_PASSWORD:? Please set a new password for the default user.}
-      DEFAULT_USER_API_KEY: ${DEFAULT_USER_API_KEY:? Please set a new api key for the default user.}
+      # DEFAULT_USER_PASSWORD: ${DEFAULT_USER_PASSWORD:? Please set a new password for the default user.}
+      # DEFAULT_USER_API_KEY: ${DEFAULT_USER_API_KEY:? Please set a new api key for the default user.}
     networks:
       - argilla
     volumes:
