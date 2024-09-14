@@ -31,7 +31,7 @@ hashed = _CRYPT_CONTEXT.hash(pw)
 docker compose up
 ```
 
-On startup need to run:
+On startup need to to exec into argilla server container and run:
 
 ```zsh
 python -m argilla_server database users migrate
@@ -50,7 +50,7 @@ docker compose down
 
 
 ```zsh
-python dump_argilla_data.py --dataset='your-dataset-name' --workspace='your-workspace-name' --outpath='./path/to/your/desired/outfile.json'
+python dump_argilla_data.py --dataset='your-dataset-name' --workspace='your-workspace-name' --outpath='./path/to/your/desired/outfile.jsonl'
 ```
 
 
