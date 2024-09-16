@@ -43,8 +43,8 @@ services:
     networks:
       - argilla
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
     volumes:
       - elasticdata:/usr/share/elasticsearch/data/
   # kibana:
