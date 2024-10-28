@@ -4,7 +4,7 @@ import os
 import argilla as rg
 
 ARGILLA_API_URL = os.environ.get("ARGILLA_API_URL", "http://localhost:6900")
-ARGILLA_API_KEY = os.environ.get("DEFAULT_USER_API_KEY", "argilla.apikey")
+ARGILLA_API_KEY = os.environ.get("ARGILLA_API_KEY", "argilla.apikey")
 
 
 def main(dataset: str, workspace: str, outpath: str | None) -> None:
