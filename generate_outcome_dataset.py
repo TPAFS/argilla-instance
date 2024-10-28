@@ -117,16 +117,12 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
     """
 
     add_existing_annotations = True
-    add_to_userid = str(
-        rg.User.me().id
-    )  # Add existing annotations to user running script
+    add_to_userid = str(rg.User.me().id)  # Add existing annotations to user running script
 
     # Used to add previously annotated records
     if add_existing_annotations:
         annotations = {}
-        with open(
-            "./data/annotated/case-summaries-w-sufficiency.jsonl", "r"
-        ) as jsonl_file:
+        with open("./data/annotated/case-summaries-w-sufficiency.jsonl", "r") as jsonl_file:
             for idx, line in enumerate(jsonl_file):
                 json_obj = json.loads(line)
                 context = json_obj["context"].strip()
@@ -197,6 +193,10 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
                             "status": "submitted",
                         }
                     ]
+                    records.append(record)
+
+                else:
+                    continue
 
             if include_suggestions:
                 suggestions = (
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     rg.init(api_url=ARGILLA_API_URL, api_key=ARGILLA_API_KEY)
 
     # Make a workspace
-    target_workspace = "case-summaries"
+    target_workspace = "hicric"
     make_workspace(target_workspace)
 
     rg.set_workspace(target_workspace)
