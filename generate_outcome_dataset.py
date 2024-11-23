@@ -190,29 +190,29 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
                         }
                     ]
 
+                    records.append(record)
+
                 else:
-                    pass
+                    continue
 
-            if include_suggestions:
-                suggestions = (
-                    [
-                        SuggestionSchema(
-                            question_name="case-spans",
-                            value=[
-                                SpanValueSchema(
-                                    start=background_start,  # position of the first character of the span
-                                    end=background_end,  # position of the character right after the end of the span
-                                    label="BC",
-                                    score=0.9,
-                                )
-                            ],
-                            agent="annotator-bot-0.0.1",
-                        ),
-                    ],
-                )
-                record.suggestions = suggestions
-
-            records.append(record)
+            # if include_suggestions:
+            #     suggestions = (
+            #         [
+            #             SuggestionSchema(
+            #                 question_name="case-spans",
+            #                 value=[
+            #                     SpanValueSchema(
+            #                         start=background_start,  # position of the first character of the span
+            #                         end=background_end,  # position of the character right after the end of the span
+            #                         label="BC",
+            #                         score=0.9,
+            #                     )
+            #                 ],
+            #                 agent="annotator-bot-0.0.1",
+            #             ),
+            #         ],
+            #     )
+            #     record.suggestions = suggestions
 
     return records
 
