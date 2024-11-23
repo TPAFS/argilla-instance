@@ -146,6 +146,7 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
             if include_suggestions:
                 background = ""
                 justification = ""
+
                 # Calculate start / end indices
                 background_start = full_text.index(background)
                 background_end = background_start + len(background)
@@ -194,10 +195,9 @@ def construct_ds_records(jsonl_path: str, include_suggestions: bool) -> list:
                             "status": "submitted",
                         }
                     ]
-                    records.append(record)
 
                 else:
-                    continue
+                    pass
 
             if include_suggestions:
                 suggestions = (
