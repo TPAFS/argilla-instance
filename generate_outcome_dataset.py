@@ -92,7 +92,7 @@ Let's now turn to a specific rubric we've developed to help make the sufficiency
             rg.RatingQuestion(
                 name="info-sufficiency",
                 title="Is the Background Context you've highlighted sufficient to make an informed prediction for the case outcome?",
-                description="Use a scale from 1 to 5, 1 being the information is certainly insufficient, 5 being certainly sufficient.",
+                description="Use a scale from 1 to 5, 1 being least sufficient, 5 being most sufficient.",
                 values=[1, 2, 3, 4, 5],
                 required=False,
             ),
